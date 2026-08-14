@@ -605,44 +605,48 @@ html.lenis, html.lenis body{ height:auto; }
   font-size:16px; font-weight:700; letter-spacing:.06em;
   color:rgba(255,246,239,.8);
 }
-.pContact__links{ margin-top:clamp(46px,6vw,84px); border-top:2px solid var(--line-light); }
-.pContact__links li{ border-bottom:2px solid var(--line-light); }
+/* アイコンを横一列に並べる */
+.pContact__icons{
+  margin-top:clamp(46px,6vw,84px);
+  display:flex; flex-wrap:wrap;
+  gap:clamp(20px,3vw,44px);
+}
 /* --lit は 0〜1。カーソルの近さに応じて JS が入れる。
    素の状態は沈ませ、近づくと浮かび上がる */
-.pContact__links a{
+.pContact__icons a{
   --lit:0;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:2em; padding:clamp(20px,2.8vw,34px) 0;
-  transition:padding .7s var(--ease-expo);
+  display:flex; flex-direction:column; align-items:center;
+  gap:.9em;
 }
-.pContact__links a:hover{ padding-inline:clamp(10px,1.6vw,26px); }
-/* JS が無い環境でもホバーで読めるようにしておく */
-.pContact__links a:hover, .pContact__links a:focus-visible{ --lit:1; }
-.pContact__links_name{
-  font-family:var(--font-en);
-  font-size:clamp(28px,4vw,60px);
-  letter-spacing:.02em;
-  color:rgba(255,246,239, calc(.38 + .62 * var(--lit)));
-  /* 光彩を3層に重ねる。1層だとただの滲みだが、
-     芯・中間・外周に分けると光をまとって見える */
-  text-shadow:
-    0 0 calc(8px * var(--lit))  rgba(255,232,196, calc(.90 * var(--lit))),
-    0 0 calc(34px * var(--lit)) rgba(255,164,84,  calc(.72 * var(--lit))),
-    0 0 calc(86px * var(--lit)) rgba(228,78,42,   calc(.48 * var(--lit)));
-  /* インライン要素には transform が効かないので inline-block にする */
-  display:inline-block;
-  transform-origin:left center;
-  transform:scale(calc(1 + .045 * var(--lit)));
+/* JS が無い環境でもホバーで灯るようにしておく */
+.pContact__icons a:hover, .pContact__icons a:focus-visible{ --lit:1; }
+
+.pContact__icons_mark{
+  width:clamp(64px,7.4vw,104px); aspect-ratio:1;
+  border-radius:50%;
+  display:grid; place-items:center;
+  border:2px solid rgba(255,246,239, calc(.20 + .62 * var(--lit)));
+  background:rgba(255,150,72, calc(.13 * var(--lit)));
+  /* 光彩を2層に重ねて、芯と外周をつくる */
+  box-shadow:
+    0 0 calc(14px * var(--lit)) rgba(255,220,175, calc(.55 * var(--lit))),
+    0 0 calc(52px * var(--lit)) rgba(240,110,55,  calc(.45 * var(--lit)));
+  transform:scale(calc(1 + .08 * var(--lit)));
   will-change:transform;
 }
-.pContact__links_arrow{
-  font-size:clamp(18px,2vw,26px);
-  color:var(--accent);
-  opacity:calc(.30 + .70 * var(--lit));
-  text-shadow:0 0 calc(26px * var(--lit)) rgba(255,110,60, calc(.75 * var(--lit)));
-  transition:transform .7s var(--ease-expo);
+.pContact__icons_mark svg{
+  width:46%; height:46%;
+  display:block;
+  fill:rgba(255,246,239, calc(.46 + .54 * var(--lit)));
+  filter:drop-shadow(0 0 calc(12px * var(--lit)) rgba(255,190,130, calc(.7 * var(--lit))));
 }
-.pContact__links a:hover .pContact__links_arrow{ transform:translate(6px,-6px); }
+.pContact__icons_label{
+  font-family:var(--font-en);
+  font-size:clamp(12px,1.2vw,15px);
+  letter-spacing:.08em;
+  color:rgba(255,246,239, calc(.44 + .56 * var(--lit)));
+  text-shadow:0 0 calc(22px * var(--lit)) rgba(255,178,98, calc(.6 * var(--lit)));
+}
 
 
 /* =========================================================

@@ -95,10 +95,10 @@
      カーソルが近づいた文字を浮かび上がらせる
      --------------------------------------------------- */
   var blooms = [];
-  document.querySelectorAll('.pContact__links a').forEach(function (el) {
+  document.querySelectorAll('.pContact__icons a').forEach(function (el) {
     blooms.push({ el: el, v: 0 });
   });
-  var BLOOM_R = 240;   // これだけ離れると完全に沈む
+  var BLOOM_R = 170;   // これだけ離れると完全に沈む（アイコンは小さいので近め）
 
   function updateBlooms() {
     for (var i = 0; i < blooms.length; i++) {
