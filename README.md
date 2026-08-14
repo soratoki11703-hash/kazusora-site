@@ -82,11 +82,24 @@ for w,name in [(1600,'portrait.jpg'),(800,'portrait-800.jpg')]:
 現像ソフト名が入っているため、公開用では落としている（GPS情報は元から無し）。
 別の写真に差し替えるときも、必ず位置情報の有無を確認すること。
 
-## 差し替えが必要なところ
+## 残っていること
 
-`index.html` 内に `TODO` コメントを置いてある。
-
-- **TicketMe の項目**（3枚目のカード）— 役割と事業内容が仮の文章
-- **Contact のリンク**— YouTube / Instagram / TikTok が `href="#"` のまま
-- **メールアドレス**— `hello@kazusora.com` は仮。実際に受信できる宛先に変える
+- **`hello@kazusora.com` の受信箱**— Zoho Mail の無料プランで作る。
+  お名前.com に **MXレコード**（＋Zohoが指定する確認用レコード）を追加すると繋がる。
+  Aレコード（サイト用）とは種類が違うので、両方を同時に設定しておける。
+  正確なMXの値はZohoの設定画面が表示するものを使うこと（契約したデータセンターで変わる）
 - **OGP画像**— SNSに貼ったときのサムネイル。`og:image` は未設定
+
+## 本文の出どころ
+
+ABOUT と WORKS の文章は、熱狂ラジオの運用実態をもとに書いた**下書き**。
+事実と違うところは直接書き換えてよい。
+
+Contact のリンク先は以下。表示言語を固定する `?hl=ja` `?lang=ja-JP` は
+見る人の環境に合わせるべきなので外してある。
+
+| | URL |
+|---|---|
+| YouTube | https://www.youtube.com/@nekkyoradio |
+| Instagram | https://www.instagram.com/nekkyouradio/ |
+| TikTok | https://www.tiktok.com/@nekkyou_radio |
