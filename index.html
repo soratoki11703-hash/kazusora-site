@@ -9,6 +9,23 @@
 <meta name="theme-color" content="#d62b21">
 <meta name="format-detection" content="telephone=no">
 
+<!-- 読み込みを許可する場所を限定する。万一なにか仕込まれても、
+     ここに書かれていない場所からのコード実行はブラウザが拒否する。
+     GitHub Pages はHTTPヘッダを設定できないため meta で指定している -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data:;
+  connect-src 'self';
+  object-src 'none';
+  base-uri 'self';
+  form-action 'none';
+  upgrade-insecure-requests">
+<!-- 他サイトへ遷移するとき、閲覧していたURLの詳細を渡さない -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <!-- SNSに貼られたときの表示 -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kazusora.com/">
@@ -331,9 +348,11 @@
   <p class="lFooter__copy">&copy; <span id="year">2026</span> kazusora.com</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<!-- 外部CDNから読まず自前で配信する。CDNが乗っ取られると
+     このサイト上で任意のコードを実行されるため（サプライチェーン攻撃） -->
+<script src="./assets/js/vendor/gsap.min.js"></script>
+<script src="./assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="./assets/js/vendor/lenis.min.js"></script>
 <script src="./assets/js/burn.js?v=2"></script>
 <script src="./assets/js/main.js?v=2"></script>
 <script src="./assets/js/cursor-fire.js?v=2"></script>
