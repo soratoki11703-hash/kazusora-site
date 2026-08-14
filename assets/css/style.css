@@ -330,26 +330,6 @@ html.lenis, html.lenis body{ height:auto; }
   .pFv__photo img{ height:100%; object-fit:cover; object-position:58% 50%; }
 }
 
-/* 右上のバッジ。文字が読めるよう回転はさせず、ゆっくり上下に浮かせる */
-.pFv__badge{
-  position:absolute;
-  top:clamp(84px,13vw,150px); right:clamp(16px,6vw,110px);
-}
-.pFv__badge{
-  width:clamp(96px,12vw,164px); aspect-ratio:1;
-  border-radius:50%;
-  background:var(--ink); color:#fff;
-  display:grid; place-items:center;
-  text-align:center; line-height:1.5;
-  font-size:clamp(12px,1.3vw,16px); font-weight:900; letter-spacing:.1em;
-  animation:badgeFloat 5s var(--ease-quart) infinite;
-  z-index:1;
-}
-@keyframes badgeFloat{
-  0%,100%{ transform:translateY(0) rotate(-8deg); }
-  50%{ transform:translateY(-14px) rotate(-8deg); }
-}
-
 .pFv__inner{ position:relative; width:100%; max-width:1400px; margin-inline:auto; z-index:2; }
 
 .pFv__eyebrow{
