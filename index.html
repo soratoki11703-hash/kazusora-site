@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KAZUSORA — 熱狂の裏側を記録する</title>
+<meta name="description" content="音楽とライブの現場で実際に起きたことを、短い映像とデータで記録しています。">
+<link rel="canonical" href="https://kazusora.com/">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kazusora.com/">
+<meta property="og:title" content="KAZUSORA — 熱狂の裏側を記録する">
+<meta property="og:description" content="音楽とライブの現場で実際に起きたことを、短い映像とデータで記録しています。">
+<meta property="og:site_name" content="KAZUSORA">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>document.documentElement.className += ' js';</script>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+
+<!-- 紙の粒子感を出すオーバーレイ -->
+<div class="cGrain" aria-hidden="true"></div>
+
+<!-- 読み込み時の幕 -->
+<div class="cCurtain" id="curtain" aria-hidden="true">
+  <div class="cCurtain__mark">KAZUSORA</div>
+</div>
+
+<header class="lHeader" id="header">
+  <a class="lHeader__logo" href="#top">KAZUSORA</a>
+  <nav class="lHeader__nav">
+    <a class="lHeader__nav_item js-anchor" href="#about"><span>About</span><span aria-hidden="true">About</span></a>
+    <a class="lHeader__nav_item js-anchor" href="#works"><span>Works</span><span aria-hidden="true">Works</span></a>
+    <a class="lHeader__nav_item js-anchor" href="#contact"><span>Contact</span><span aria-hidden="true">Contact</span></a>
+  </nav>
+</header>
+
+<!-- 両端をずっと流れる帯。装飾なので読み上げ対象から外す。
+     左だけ不要になったら、下の cMarquee--left のブロックごと消せばよい -->
+<div class="cMarquee cMarquee--left" aria-hidden="true">
+  <div class="cMarquee__track">
+    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
+    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
+  </div>
+</div>
+
+<div class="cMarquee cMarquee--right" aria-hidden="true">
+  <div class="cMarquee__track">
+    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
+    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ============ FV ============ -->
+  <section class="pFv">
+    <div class="pFv__bg" data-parallax="0.18" aria-hidden="true"></div>
+
+    <!-- 装飾としての写真。内容はABOUTの同じ写真が担うので読み上げ対象から外す -->
+    <div class="pFv__photo" data-parallax="0.07" aria-hidden="true">
+      <img src="./assets/img/portrait.jpg"
+           srcset="./assets/img/portrait-800.jpg 800w, ./assets/img/portrait.jpg 1600w"
+           sizes="(min-width: 900px) 52vw, 100vw"
+           alt="" width="1600" height="1067" decoding="async"
+           onerror="this.closest('.pFv__photo').style.display='none'">
+    </div>
+
+    <div class="pFv__badge" aria-hidden="true"><span>熱狂の<br>記録</span></div>
+
+    <div class="pFv__inner">
+      <p class="pFv__eyebrow js-chars">Record of the fever</p>
+
+      <h1 class="pFv__title">
+        <span class="pFv__title_line js-chars">KAZUSORA</span>
+      </h1>
+
+      <p class="pFv__lead">
+        <span class="js-lines">熱狂は、終わった瞬間から</span>
+        <span class="js-lines">忘れられていく。</span>
+        <span class="js-lines">だから、記録している。</span>
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="pAbout" id="about">
+    <div class="pAbout__inner">
+
+      <div class="pAbout__head">
+        <h2 class="cHeading">
+          <span class="cHeading__en js-chars">About</span>
+          <span class="cHeading__ja js-lines">記録する人</span>
+        </h2>
+      </div>
+
+      <div class="pAbout__body">
+
+        <!-- 写真が未設置のうちは枠ごと隠す（画像だけ壊れて見えるのを防ぐ） -->
+        <figure class="pAbout__photo">
+          <img src="./assets/img/portrait.jpg"
+               srcset="./assets/img/portrait-800.jpg 800w, ./assets/img/portrait.jpg 1600w"
+               sizes="(min-width: 900px) 56vw, 88vw"
+               alt="サングラスを指で下げてこちらを見る KAZUSORA。魚眼レンズで撮影された、オレンジの照明の効いた一枚"
+               width="1600" height="1067" loading="lazy" decoding="async"
+               onerror="this.closest('.pAbout__photo').style.display='none'">
+          <figcaption class="pAbout__photo_cap">
+            <span class="pAbout__photo_cap_en">KAZUSORA</span>
+            <span class="pAbout__photo_cap_ja">カズソラ</span>
+          </figcaption>
+        </figure>
+
+        <p class="pAbout__text js-lines">
+          フェスやクラブ、チケットの現場では、毎日なにかが起きています。うまくいった話より、
+          損をした話や揉めた話のほうが圧倒的によく聞かれる——それは感想ではなく、
+          毎朝集めている自分の再生データがそう言っています。
+        </p>
+        <p class="pAbout__text js-lines">
+          当事者から直接聞いて、短い映像にして残す。同時に、その一本がどこまで届いたのかを
+          数字で追いかける。<em>つくることと、確かめることを、同じ人間がやる。</em>
+          それが一番速いと思っています。
+        </p>
+
+        <dl class="pAbout__meta">
+          <div class="pAbout__meta_row" data-from="left">
+            <dt>やっていること</dt>
+            <dd>短尺映像メディアの企画・出演・編集 / 分析基盤の自作</dd>
+          </div>
+          <div class="pAbout__meta_row" data-from="left">
+            <dt>扱う領域</dt>
+            <dd>音楽・ライブ・フェス・チケット</dd>
+          </div>
+          <div class="pAbout__meta_row" data-from="left">
+            <dt>拠点</dt>
+            <dd>日本 / Japan</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ WORKS（横スクロール） ============ -->
+  <section class="pWorks" id="works">
+    <div class="pWorks__sticky">
+
+      <div class="pWorks__head">
+        <h2 class="cHeading cHeading--light">
+          <span class="cHeading__en js-chars">Works</span>
+          <span class="cHeading__ja js-lines">つくっているもの</span>
+        </h2>
+        <div class="pWorks__progress" aria-hidden="true"><i id="worksProgress"></i></div>
+      </div>
+
+      <div class="pWorks__track" id="worksTrack">
+
+        <article class="pWorks__item">
+          <span class="pWorks__item_num">01</span>
+          <h3 class="pWorks__item_title">熱狂ラジオ</h3>
+          <p class="pWorks__item_role">企画 / 出演 / 編集</p>
+          <p class="pWorks__item_text">
+            音楽の現場にいる人に、実際に起きたことを聞くショート動画メディア。
+            YouTube・Instagram・TikTok の3媒体で毎週配信しています。
+            派手な成功譚ではなく、損得と失敗の話を軸に置いているのが特徴です。
+          </p>
+          <ul class="pWorks__item_tags">
+            <li>YouTube</li><li>Instagram</li><li>TikTok</li>
+          </ul>
+        </article>
+
+        <article class="pWorks__item">
+          <span class="pWorks__item_num">02</span>
+          <h3 class="pWorks__item_title">毎朝レポート</h3>
+          <p class="pWorks__item_role">設計 / 開発 / 運用</p>
+          <p class="pWorks__item_text">
+            3媒体に散らばった数字を毎朝7時に自動で集め、伸びている投稿と沈んでいる投稿を
+            判定して手元に届ける仕組み。判断の材料を、勘ではなく記録から取り出すために
+            自分で書きました。サーバーは持たず、全自動で動き続けます。
+          </p>
+          <ul class="pWorks__item_tags">
+            <li>Python</li><li>GitHub Actions</li><li>Claude API</li>
+          </ul>
+        </article>
+
+        <article class="pWorks__item pWorks__item--end">
+          <p class="pWorks__item_end_text js-lines">記録は、<br>まだ増えています。</p>
+          <a class="cLinkButton" href="#contact">
+            <span class="cLinkButton__face">
+              <span class="cLinkButton__label">Contact</span>
+              <span class="cLinkButton__label" aria-hidden="true">Contact</span>
+            </span>
+            <i class="cLinkButton__corner cLinkButton__corner--tl"></i>
+            <i class="cLinkButton__corner cLinkButton__corner--br"></i>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NUMBERS ============ -->
+  <section class="pNumbers">
+    <div class="pNumbers__inner">
+      <ul class="pNumbers__list">
+        <li class="pNumbers__item">
+          <span class="pNumbers__item_num"><span class="js-count" data-to="3">0</span></span>
+          <span class="pNumbers__item_label">媒体を横断して記録</span>
+        </li>
+        <li class="pNumbers__item">
+          <span class="pNumbers__item_num"><span class="js-count" data-to="7">0</span><small>:00</small></span>
+          <span class="pNumbers__item_label">毎朝、自動で更新</span>
+        </li>
+        <li class="pNumbers__item">
+          <span class="pNumbers__item_num"><span class="js-count" data-to="365">0</span><small>日</small></span>
+          <span class="pNumbers__item_label">止めずに動く仕組み</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="pContact" id="contact">
+    <div class="pContact__inner">
+
+      <h2 class="cHeading cHeading--light">
+        <span class="cHeading__en js-chars">Contact</span>
+        <span class="cHeading__ja js-lines">つながる</span>
+      </h2>
+
+      <p class="pContact__lead js-lines">
+        取材・出演・お仕事のご相談は、こちらから。
+      </p>
+
+      <ul class="pContact__links">
+        <!-- TODO: href="#" を実際のURLに差し替えてください -->
+        <li data-from="left"><a href="#" target="_blank" rel="noopener"><span class="pContact__links_name">YouTube</span><span class="pContact__links_arrow" aria-hidden="true">↗</span></a></li>
+        <li data-from="right"><a href="#" target="_blank" rel="noopener"><span class="pContact__links_name">Instagram</span><span class="pContact__links_arrow" aria-hidden="true">↗</span></a></li>
+        <li data-from="left"><a href="#" target="_blank" rel="noopener"><span class="pContact__links_name">TikTok</span><span class="pContact__links_arrow" aria-hidden="true">↗</span></a></li>
+        <li data-from="right"><a href="mailto:hello@kazusora.com"><span class="pContact__links_name">Mail</span><span class="pContact__links_arrow" aria-hidden="true">↗</span></a></li>
+      </ul>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="lFooter">
+  <p class="lFooter__logo">KAZUSORA</p>
+  <p class="lFooter__copy">&copy; <span id="year">2026</span> kazusora.com</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="./assets/js/burn.js"></script>
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/cursor-fire.js"></script>
+</body>
+</html>
