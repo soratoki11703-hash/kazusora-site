@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KAZUSORA（カズソラ）｜熱狂ラジオ｜音楽の現場を記録する</title>
-<meta name="description" content="カズソラ（KAZUSORA）の公式サイト。フェス・クラブ・チケットの現場で実際に起きたことを当事者に聞き、短い動画で記録するメディア「熱狂ラジオ」を企画・出演・編集。YouTube・Instagram・TikTokで配信中。">
+<title>詫摩一空（TAKUMA KAZUSORA / たくまかずそら）公式サイト｜熱狂ラジオ</title>
+<meta name="description" content="詫摩一空（たくま かずそら / TAKUMA KAZUSORA / KAZUSORA / FIRST SKY）の公式サイト。フェス・クラブ・チケットの現場で実際に起きたことを当事者に聞き、短い動画で記録するメディア「熱狂ラジオ」を企画・出演・編集。YouTube・Instagram・TikTokで配信中。">
 <link rel="canonical" href="https://kazusora.com/">
 <meta name="theme-color" content="#d62b21">
 <meta name="format-detection" content="telephone=no">
@@ -14,11 +14,11 @@
      GitHub Pages はHTTPヘッダを設定できないため meta で指定している -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
-  script-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data:;
-  connect-src 'self';
+  connect-src 'self' https://cloudflareinsights.com;
   object-src 'none';
   base-uri 'self';
   form-action 'none';
@@ -29,7 +29,7 @@
 <!-- SNSに貼られたときの表示 -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kazusora.com/">
-<meta property="og:title" content="KAZUSORA（カズソラ）｜熱狂ラジオ">
+<meta property="og:title" content="詫摩一空（TAKUMA KAZUSORA）｜熱狂ラジオ">
 <meta property="og:description" content="フェス・クラブ・チケットの現場で実際に起きたことを、当事者に聞いて短い動画で記録しています。">
 <meta property="og:site_name" content="KAZUSORA">
 <meta property="og:locale" content="ja_JP">
@@ -38,7 +38,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="KAZUSORA — Record of the fever">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="KAZUSORA（カズソラ）｜熱狂ラジオ">
+<meta name="twitter:title" content="詫摩一空（TAKUMA KAZUSORA）｜熱狂ラジオ">
 <meta name="twitter:description" content="フェス・クラブ・チケットの現場で実際に起きたことを、当事者に聞いて短い動画で記録しています。">
 <meta name="twitter:image" content="https://kazusora.com/assets/img/og.jpg">
 
@@ -52,14 +52,31 @@
       "@id": "https://kazusora.com/#website",
       "url": "https://kazusora.com/",
       "name": "KAZUSORA",
+      "alternateName": ["詫摩一空 公式サイト", "TAKUMA KAZUSORA"],
       "inLanguage": "ja",
       "publisher": { "@id": "https://kazusora.com/#person" }
     },
     {
+      "@type": "ProfilePage",
+      "@id": "https://kazusora.com/#profile",
+      "url": "https://kazusora.com/",
+      "name": "詫摩一空（TAKUMA KAZUSORA）公式サイト",
+      "isPartOf": { "@id": "https://kazusora.com/#website" },
+      "mainEntity": { "@id": "https://kazusora.com/#person" }
+    },
+    {
       "@type": "Person",
       "@id": "https://kazusora.com/#person",
-      "name": "KAZUSORA",
-      "alternateName": "カズソラ",
+      "name": "詫摩一空",
+      "familyName": "詫摩",
+      "givenName": "一空",
+      "alternateName": [
+        "TAKUMA KAZUSORA", "Takuma Kazusora", "Kazusora Takuma",
+        "KAZUSORA", "Kazusora", "TAKUMA",
+        "たくまかずそら", "たくま かずそら", "タクマカズソラ",
+        "かずそら", "カズソラ",
+        "FIRST SKY", "First Sky"
+      ],
       "url": "https://kazusora.com/",
       "image": "https://kazusora.com/assets/img/og.jpg",
       "description": "音楽・ライブ・フェス・チケットの現場で起きたことを、短い動画とデータで記録している。",
@@ -165,12 +182,12 @@
           <img src="./assets/img/portrait.jpg"
                srcset="./assets/img/portrait-800.jpg 800w, ./assets/img/portrait.jpg 1600w"
                sizes="(min-width: 900px) 56vw, 88vw"
-               alt="サングラスを指で下げてこちらを見る KAZUSORA。魚眼レンズで撮影された、オレンジの照明の効いた一枚"
+               alt="サングラスを指で下げてこちらを見る詫摩一空（KAZUSORA）。魚眼レンズで撮影された、オレンジの照明の効いた一枚"
                width="1600" height="1067" loading="lazy" decoding="async"
                onerror="this.closest('.pAbout__photo').style.display='none'">
           <figcaption class="pAbout__photo_cap">
             <span class="pAbout__photo_cap_en">KAZUSORA</span>
-            <span class="pAbout__photo_cap_ja">カズソラ</span>
+            <span class="pAbout__photo_cap_ja">詫摩一空 / たくま かずそら / TAKUMA KAZUSORA</span>
           </figcaption>
         </figure>
 
@@ -186,6 +203,14 @@
         </p>
 
         <dl class="pAbout__meta">
+          <div class="pAbout__meta_row" data-from="left">
+            <dt>名前</dt>
+            <dd>詫摩一空（たくま かずそら / TAKUMA KAZUSORA）</dd>
+          </div>
+          <div class="pAbout__meta_row" data-from="left">
+            <dt>呼び名</dt>
+            <dd>KAZUSORA / カズソラ / FIRST SKY（「一空」の英語読み）</dd>
+          </div>
           <div class="pAbout__meta_row" data-from="left">
             <dt>やっていること</dt>
             <dd>短尺映像メディアの企画・出演・編集 / 分析基盤の自作</dd>
@@ -345,7 +370,7 @@
 
 <footer class="lFooter">
   <p class="lFooter__logo">KAZUSORA</p>
-  <p class="lFooter__copy">&copy; <span id="year">2026</span> kazusora.com</p>
+  <p class="lFooter__copy">&copy; <span id="year">2026</span> 詫摩一空 / TAKUMA KAZUSORA</p>
 </footer>
 
 <!-- 外部CDNから読まず自前で配信する。CDNが乗っ取られると
@@ -356,5 +381,7 @@
 <script src="./assets/js/burn.js?v=2"></script>
 <script src="./assets/js/main.js?v=2"></script>
 <script src="./assets/js/cursor-fire.js?v=2"></script>
+<!-- アクセス計測（Cloudflare Web Analytics。Cookie は使わない） -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9926faf0ab3e4a0c98c5b6c5265ab36c"}'></script>
 </body>
 </html>

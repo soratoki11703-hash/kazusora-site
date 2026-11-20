@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://kazusora.com/sitemap.xml
+Sitemap: https://kazusora.com/game/sitemap.xml
