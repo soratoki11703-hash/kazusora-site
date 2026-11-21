@@ -666,6 +666,9 @@ html.lenis, html.lenis body{ height:auto; }
   letter-spacing:.06em; color:var(--paper);
 }
 .lFooter__copy{ font-size:12px; font-weight:700; letter-spacing:.08em; }
+.lFooter__links{ position:relative; z-index:1; flex-basis:100%; margin:0; font-size:14px; letter-spacing:.04em; }
+.lFooter__links a{ color:var(--paper); text-underline-offset:3px; }
+.lFooter__links a:focus-visible{ outline:4px solid #000; outline-offset:2px; box-shadow:0 0 0 2px #ffd43d; background:#ffd43d; color:#000; }
 
 
 /* =========================================================
