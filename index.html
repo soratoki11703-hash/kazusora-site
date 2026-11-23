@@ -2,11 +2,12 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>詫摩一空（TAKUMA KAZUSORA / たくまかずそら）公式サイト｜熱狂ラジオ</title>
-<meta name="description" content="詫摩一空（たくま かずそら / TAKUMA KAZUSORA / KAZUSORA / FIRST SKY）の公式サイト。フェス・クラブ・チケットの現場で実際に起きたことを当事者に聞き、短い動画で記録するメディア「熱狂ラジオ」を企画・出演・編集。YouTube・Instagram・TikTokで配信中。">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>詫摩一空（TAKUMA KAZUSORA / たくまかずそら）公式サイト｜KAZUSORA</title>
+<meta name="description" content="詫摩一空（たくま かずそら / TAKUMA KAZUSORA / KAZUSORA / FIRST SKY）の公式サイト。音楽の現場を記録するショート動画メディア「熱狂ラジオ」、ブラウザで遊べる KAZUSORA GAMES、バトルフェーズ・スカッとボクシングなどのアプリを、ひとつの仮想空間にまとめています。">
 <link rel="canonical" href="https://kazusora.com/">
-<meta name="theme-color" content="#d62b21">
+<meta name="theme-color" content="#05070c">
+<meta name="color-scheme" content="dark">
 <meta name="format-detection" content="telephone=no">
 <!-- Google AdSense のサイト所有確認（スクリプトは読み込まない） -->
 <meta name="google-adsense-account" content="ca-pub-9851397835873240">
@@ -19,7 +20,7 @@
   script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
-  img-src 'self' data:;
+  img-src 'self' data: blob:;
   connect-src 'self' https://cloudflareinsights.com;
   object-src 'none';
   base-uri 'self';
@@ -31,17 +32,17 @@
 <!-- SNSに貼られたときの表示 -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kazusora.com/">
-<meta property="og:title" content="詫摩一空（TAKUMA KAZUSORA）｜熱狂ラジオ">
-<meta property="og:description" content="フェス・クラブ・チケットの現場で実際に起きたことを、当事者に聞いて短い動画で記録しています。">
+<meta property="og:title" content="詫摩一空（TAKUMA KAZUSORA）｜KAZUSORA">
+<meta property="og:description" content="熱狂ラジオ、ゲーム、アプリ。つくっているものを、ひとつの仮想空間にまとめました。">
 <meta property="og:site_name" content="KAZUSORA">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://kazusora.com/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="KAZUSORA — Record of the fever">
+<meta property="og:image:alt" content="KAZUSORA">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="詫摩一空（TAKUMA KAZUSORA）｜熱狂ラジオ">
-<meta name="twitter:description" content="フェス・クラブ・チケットの現場で実際に起きたことを、当事者に聞いて短い動画で記録しています。">
+<meta name="twitter:title" content="詫摩一空（TAKUMA KAZUSORA）｜KAZUSORA">
+<meta name="twitter:description" content="熱狂ラジオ、ゲーム、アプリ。つくっているものを、ひとつの仮想空間にまとめました。">
 <meta name="twitter:image" content="https://kazusora.com/assets/img/og.jpg">
 
 <!-- 検索エンジンに「誰のサイトか」を構造化して伝える -->
@@ -81,8 +82,8 @@
       ],
       "url": "https://kazusora.com/",
       "image": "https://kazusora.com/assets/img/og.jpg",
-      "description": "音楽・ライブ・フェス・チケットの現場で起きたことを、短い動画とデータで記録している。",
-      "knowsAbout": ["音楽", "ライブ", "フェス", "チケット", "ショート動画"],
+      "description": "音楽・ライブ・フェス・チケットの現場で起きたことを短い動画とデータで記録しながら、ゲームやアプリをつくっている。",
+      "knowsAbout": ["音楽", "ライブ", "フェス", "チケット", "ショート動画", "ゲーム", "アプリ開発", "格闘技"],
       "sameAs": [
         "https://www.youtube.com/@nekkyoradio",
         "https://www.instagram.com/nekkyouradio/",
@@ -94,297 +95,246 @@
 }
 </script>
 
-<script>document.documentElement.className += ' js';</script>
+<script>document.documentElement.classList.add('js');</script>
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
-<link rel="stylesheet" href="./assets/css/style.css?v=2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="./assets/css/space.css?v=1">
 </head>
 <body>
 
-<!-- 紙の粒子感を出すオーバーレイ -->
-<div class="cGrain" aria-hidden="true"></div>
+<!-- 仮想空間（three.js）。読めない環境では CSS の背景だけになる -->
+<canvas class="world" id="world" aria-hidden="true"></canvas>
+<div class="world-fallback" aria-hidden="true"></div>
+<div class="fx-vignette" aria-hidden="true"></div>
+<div class="fx-scan" aria-hidden="true"></div>
+<div class="fx-grain" aria-hidden="true"></div>
 
-<!-- 読み込み時の幕 -->
-<div class="cCurtain" id="curtain" aria-hidden="true">
-  <div class="cCurtain__mark">KAZUSORA</div>
+<!-- 起動画面 -->
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot__inner">
+    <p class="boot__line">KAZUSORA.COM // VIRTUAL SPACE</p>
+    <p class="boot__line boot__line--dim" id="bootLog">LINKING…</p>
+    <div class="boot__bar"><i id="bootBar"></i></div>
+  </div>
 </div>
 
-<header class="lHeader" id="header">
-  <a class="lHeader__logo" href="#top">KAZUSORA</a>
-  <nav class="lHeader__nav">
-    <a class="lHeader__nav_item js-anchor" href="#about"><span>About</span><span aria-hidden="true">About</span></a>
-    <a class="lHeader__nav_item js-anchor" href="#works"><span>Works</span><span aria-hidden="true">Works</span></a>
-    <a class="lHeader__nav_item js-anchor" href="#contact"><span>Contact</span><span aria-hidden="true">Contact</span></a>
+<header class="hud-top">
+  <a class="hud-logo" href="#top" aria-label="KAZUSORA トップへ">
+    <span class="hud-logo__mark" aria-hidden="true"></span>KAZUSORA
+  </a>
+  <nav class="hud-nav" aria-label="セクション">
+    <a href="#radio">Radio</a>
+    <a href="#games">Games</a>
+    <a href="#apps">Apps</a>
+    <a href="#profile">Profile</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
 
-<!-- 両端をずっと流れる帯。装飾なので読み上げ対象から外す。
-     左だけ不要になったら、下の cMarquee--left のブロックごと消せばよい -->
-<div class="cMarquee cMarquee--left" aria-hidden="true">
-  <div class="cMarquee__track">
-    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
-    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
+<!-- 画面下の計器。装飾なので読み上げない -->
+<div class="hud-bottom" aria-hidden="true">
+  <div class="hud-readout">
+    <span class="hud-readout__k">SECTOR</span>
+    <span class="hud-readout__v" id="hudSector">00 ENTRANCE</span>
+  </div>
+  <div class="hud-readout hud-readout--depth">
+    <span class="hud-readout__k">DEPTH</span>
+    <span class="hud-readout__v" id="hudDepth">0000.0 m</span>
+  </div>
+  <div class="hud-readout hud-readout--right">
+    <span class="hud-readout__k">TOKYO</span>
+    <span class="hud-readout__v" id="hudClock">--:--:--</span>
+    <span class="hud-live"><i></i>ONLINE</span>
   </div>
 </div>
-
-<div class="cMarquee cMarquee--right" aria-hidden="true">
-  <div class="cMarquee__track">
-    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
-    <span class="cMarquee__text">KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / KAZUSORA / </span>
-  </div>
-</div>
+<div class="hud-rail" aria-hidden="true"><i id="hudRail"></i></div>
 
 <main id="top">
 
-  <!-- ============ FV ============ -->
-  <section class="pFv">
-    <div class="pFv__bg" data-parallax="0.18" aria-hidden="true"></div>
-
-    <!-- 装飾としての写真。内容はABOUTの同じ写真が担うので読み上げ対象から外す -->
-    <div class="pFv__photo" data-parallax="0.07" aria-hidden="true">
-      <img src="./assets/img/portrait.jpg"
-           srcset="./assets/img/portrait-800.jpg 800w, ./assets/img/portrait.jpg 1600w"
-           sizes="(min-width: 900px) 52vw, 100vw"
-           alt="" width="1600" height="1067" decoding="async"
-           onerror="this.closest('.pFv__photo').style.display='none'">
-    </div>
-
-    <div class="pFv__inner">
-      <p class="pFv__eyebrow js-chars">Record of the fever</p>
-
-      <h1 class="pFv__title">
-        <span class="pFv__title_line js-chars">KAZUSORA</span>
+  <!-- ============ ENTRANCE ============ -->
+  <section class="zone zone--hero" data-zone="0" data-sector="00 ENTRANCE">
+    <div class="hero">
+      <p class="hero__eyebrow"><span class="blink" aria-hidden="true">▍</span>ENTERING KAZUSORA.COM</p>
+      <h1 class="hero__title">
+        <span class="hero__title_en" data-glitch="KAZUSORA">KAZUSORA</span>
+        <span class="hero__title_ja">詫摩一空 / TAKUMA KAZUSORA</span>
       </h1>
-
-      <p class="pFv__lead">
-        <span class="js-lines">熱狂は、終わった瞬間から</span>
-        <span class="js-lines">忘れられていく。</span>
-        <span class="js-lines">だから、記録している。</span>
+      <p class="hero__lead">
+        熱狂を記録して、遊びをつくる。<br>
+        ラジオも、ゲームも、アプリも、<br class="sp">ぜんぶこの空間に置いてあります。
       </p>
+      <ol class="hero__map">
+        <li><a href="#radio"><span>01</span>熱狂ラジオ</a></li>
+        <li><a href="#games"><span>02</span>ゲーム</a></li>
+        <li><a href="#apps"><span>03</span>アプリ</a></li>
+        <li><a href="#profile"><span>04</span>プロフィール</a></li>
+        <li><a href="#contact"><span>05</span>連絡先</a></li>
+      </ol>
+      <p class="hero__hint" aria-hidden="true">SCROLL TO MOVE FORWARD<i></i></p>
     </div>
-
   </section>
 
-  <!-- ============ ABOUT ============ -->
-  <section class="pAbout" id="about">
-    <div class="pAbout__inner">
-
-      <div class="pAbout__head">
-        <h2 class="cHeading">
-          <span class="cHeading__en js-chars">About</span>
-          <span class="cHeading__ja js-lines">記録する人</span>
-        </h2>
+  <!-- ============ RADIO ============ -->
+  <section class="zone zone--right" id="radio" data-zone="1" data-sector="01 RADIO">
+    <article class="win">
+      <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span>~/kazusora/radio</span></div>
+      <div class="win__body">
+        <p class="win__kicker">01 — RADIO</p>
+        <h2 class="win__title">熱狂ラジオ</h2>
+        <p class="win__role">企画 / 出演 / 編集</p>
+        <p>
+          フェスやクラブ、チケットの現場で実際に起きたことを、当事者に聞いて短い動画で残すメディア。
+          派手な成功譚より、損をした話や揉めた話を軸に置いています。YouTube・Instagram・TikTok で配信中。
+        </p>
+        <ul class="links">
+          <li><a href="https://www.youtube.com/@nekkyoradio" target="_blank" rel="noopener">YouTube<span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.instagram.com/nekkyouradio/" target="_blank" rel="noopener">Instagram<span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.tiktok.com/@nekkyou_radio" target="_blank" rel="noopener">TikTok<span aria-hidden="true">↗</span></a></li>
+        </ul>
+        <div class="win__sub">
+          <h3>毎朝レポート</h3>
+          <p>
+            3媒体に散らばった再生数を毎朝7時に自動で集め、伸びている投稿と沈んでいる投稿を判定して届ける仕組み。
+            つくることと、確かめることを、同じ人間がやるために自分で書きました。
+          </p>
+          <ul class="tags"><li>Python</li><li>GitHub Actions</li><li>Claude API</li></ul>
+        </div>
       </div>
+    </article>
+  </section>
 
-      <div class="pAbout__body">
+  <!-- ============ GAMES ============ -->
+  <section class="zone zone--left" id="games" data-zone="2" data-sector="02 GAMES">
+    <article class="win">
+      <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span>~/kazusora/games</span></div>
+      <div class="win__body">
+        <p class="win__kicker">02 — GAMES</p>
+        <h2 class="win__title">KAZUSORA GAMES</h2>
+        <p>
+          ブラウザを開くだけで遊べるミニゲーム。インストールも登録もいりません。スマホでもパソコンでも。
+        </p>
+        <a class="game" href="/games/rakkaten/">
+          <span class="game__tag">LATEST</span>
+          <span class="game__name">落下点</span>
+          <span class="game__desc">センターに次々と打ち上がるフライを、走って、飛びこんで捕り続けるノックゲーム。何回連続で捕れるか。</span>
+          <span class="game__go" aria-hidden="true">PLAY →</span>
+        </a>
+        <p class="win__more"><a href="/games/">すべてのゲームを見る<span aria-hidden="true"> →</span></a></p>
+      </div>
+    </article>
+  </section>
 
-        <!-- 写真が未設置のうちは枠ごと隠す（画像だけ壊れて見えるのを防ぐ） -->
-        <figure class="pAbout__photo">
-          <img src="./assets/img/portrait.jpg"
+  <!-- ============ APPS ============ -->
+  <section class="zone zone--right" id="apps" data-zone="3" data-sector="03 APPS">
+    <article class="win win--wide">
+      <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span>~/kazusora/apps</span></div>
+      <div class="win__body">
+        <p class="win__kicker">03 — APPS</p>
+        <h2 class="win__title">アプリ</h2>
+        <p>iPhone のアプリ。App Store で配信しています（配信元: 株式会社チケミー）。</p>
+        <ul class="apps">
+          <li>
+            <a href="https://apps.apple.com/jp/app/id6820875383" target="_blank" rel="noopener">
+              <img src="./assets/img/apps/battle-phase.jpg" alt="" width="256" height="256" loading="lazy" decoding="async">
+              <span class="apps__name">バトルフェーズ</span>
+              <span class="apps__desc">キャラも武器もその場でつくって、すぐ戦える3D対戦アクション。</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://apps.apple.com/jp/app/id6818497061" target="_blank" rel="noopener">
+              <img src="./assets/img/apps/sukatto-boxing.jpg" alt="" width="256" height="256" loading="lazy" decoding="async">
+              <span class="apps__name">スカッとボクシング</span>
+              <span class="apps__desc">ムカついたことをサンドバッグに書いて、殴って、飛ばす。</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://apps.apple.com/jp/app/id6825375270" target="_blank" rel="noopener">
+              <img src="./assets/img/apps/gong-ippatsu.jpg" alt="" width="256" height="256" loading="lazy" decoding="async">
+              <span class="apps__name">ゴング一発</span>
+              <span class="apps__desc">合図の瞬間、先に打ったほうが勝つ。0.001秒の反射神経ゲーム。</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://apps.apple.com/jp/app/id6824375699" target="_blank" rel="noopener">
+              <img src="./assets/img/apps/fight-map.jpg" alt="" width="256" height="256" loading="lazy" decoding="async">
+              <span class="apps__name">ファイトマップ</span>
+              <span class="apps__desc">格闘技とプロレスの大会日程・ニュース・選手の戦績がひとつでわかる。</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://apps.apple.com/jp/app/id6818523912" target="_blank" rel="noopener">
+              <img src="./assets/img/apps/yomiyomi.jpg" alt="" width="256" height="256" loading="lazy" decoding="async">
+              <span class="apps__name">ヨミヨミ</span>
+              <span class="apps__desc">格闘技の試合結果をみんなで予想する、無料の予想ゲーム。</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ PROFILE ============ -->
+  <section class="zone zone--left" id="profile" data-zone="4" data-sector="04 PROFILE">
+    <article class="win">
+      <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span>~/kazusora/profile</span></div>
+      <div class="win__body">
+        <p class="win__kicker">04 — PROFILE</p>
+        <h2 class="win__title">詫摩一空</h2>
+        <figure class="portrait">
+          <img src="./assets/img/portrait-800.jpg"
                srcset="./assets/img/portrait-800.jpg 800w, ./assets/img/portrait.jpg 1600w"
-               sizes="(min-width: 900px) 56vw, 88vw"
+               sizes="(min-width: 900px) 480px, 90vw"
                alt="サングラスを指で下げてこちらを見る詫摩一空（KAZUSORA）。魚眼レンズで撮影された、オレンジの照明の効いた一枚"
-               width="1600" height="1067" loading="lazy" decoding="async"
-               onerror="this.closest('.pAbout__photo').style.display='none'">
-          <figcaption class="pAbout__photo_cap">
-            <span class="pAbout__photo_cap_en">KAZUSORA</span>
-            <span class="pAbout__photo_cap_ja">詫摩一空 / たくま かずそら / TAKUMA KAZUSORA</span>
-          </figcaption>
+               width="800" height="533" loading="lazy" decoding="async">
+          <figcaption>ID: KAZUSORA / FIRST SKY</figcaption>
         </figure>
-
-        <p class="pAbout__text js-lines">
-          フェスやクラブ、チケットの現場では、毎日なにかが起きています。うまくいった話より、
-          損をした話や揉めた話のほうが圧倒的によく聞かれる——それは感想ではなく、
-          毎朝集めている自分の再生データがそう言っています。
+        <p>
+          フェスやクラブ、チケットの現場では、毎日なにかが起きています。当事者から直接聞いて短い映像にして残し、
+          その一本がどこまで届いたのかを数字で追いかける。最近は、ゲームやアプリも自分の手でつくっています。
         </p>
-        <p class="pAbout__text js-lines">
-          当事者から直接聞いて、短い映像にして残す。同時に、その一本がどこまで届いたのかを
-          数字で追いかける。<em>つくることと、確かめることを、同じ人間がやる。</em>
-          それが一番速いと思っています。
-        </p>
-
-        <dl class="pAbout__meta">
-          <div class="pAbout__meta_row" data-from="left">
-            <dt>名前</dt>
-            <dd>詫摩一空（たくま かずそら / TAKUMA KAZUSORA）</dd>
-          </div>
-          <div class="pAbout__meta_row" data-from="left">
-            <dt>呼び名</dt>
-            <dd>KAZUSORA / カズソラ / FIRST SKY（「一空」の英語読み）</dd>
-          </div>
-          <div class="pAbout__meta_row" data-from="left">
-            <dt>やっていること</dt>
-            <dd>短尺映像メディアの企画・出演・編集 / 分析基盤の自作</dd>
-          </div>
-          <div class="pAbout__meta_row" data-from="left">
-            <dt>扱う領域</dt>
-            <dd>音楽・ライブ・フェス・チケット</dd>
-          </div>
-          <div class="pAbout__meta_row" data-from="left">
-            <dt>拠点</dt>
-            <dd>日本 / Japan</dd>
-          </div>
+        <dl class="meta">
+          <div><dt>名前</dt><dd>詫摩一空（たくま かずそら / TAKUMA KAZUSORA）</dd></div>
+          <div><dt>呼び名</dt><dd>KAZUSORA / カズソラ / FIRST SKY（「一空」の英語読み）</dd></div>
+          <div><dt>やっていること</dt><dd>短尺映像メディアの企画・出演・編集 / ゲーム・アプリ開発 / 分析基盤の自作</dd></div>
+          <div><dt>扱う領域</dt><dd>音楽・ライブ・フェス・チケット・格闘技</dd></div>
+          <div><dt>拠点</dt><dd>日本 / Japan</dd></div>
         </dl>
       </div>
-
-    </div>
-  </section>
-
-  <!-- ============ WORKS（横スクロール） ============ -->
-  <section class="pWorks" id="works">
-    <div class="pWorks__sticky">
-
-      <div class="pWorks__head">
-        <h2 class="cHeading cHeading--light">
-          <span class="cHeading__en js-chars">Works</span>
-          <span class="cHeading__ja js-lines">つくっているもの</span>
-        </h2>
-        <div class="pWorks__progress" aria-hidden="true"><i id="worksProgress"></i></div>
-      </div>
-
-      <div class="pWorks__track" id="worksTrack">
-
-        <article class="pWorks__item">
-          <span class="pWorks__item_num">01</span>
-          <h3 class="pWorks__item_title">熱狂ラジオ</h3>
-          <p class="pWorks__item_role">企画 / 出演 / 編集</p>
-          <p class="pWorks__item_text">
-            音楽の現場にいる人に、実際に起きたことを聞くショート動画メディア。
-            YouTube・Instagram・TikTok の3媒体で毎週配信しています。
-            派手な成功譚ではなく、損得と失敗の話を軸に置いているのが特徴です。
-          </p>
-          <ul class="pWorks__item_tags">
-            <li>YouTube</li><li>Instagram</li><li>TikTok</li>
-          </ul>
-        </article>
-
-        <article class="pWorks__item">
-          <span class="pWorks__item_num">02</span>
-          <h3 class="pWorks__item_title">毎朝レポート</h3>
-          <p class="pWorks__item_role">設計 / 開発 / 運用</p>
-          <p class="pWorks__item_text">
-            3媒体に散らばった数字を毎朝7時に自動で集め、伸びている投稿と沈んでいる投稿を
-            判定して手元に届ける仕組み。判断の材料を、勘ではなく記録から取り出すために
-            自分で書きました。サーバーは持たず、全自動で動き続けます。
-          </p>
-          <ul class="pWorks__item_tags">
-            <li>Python</li><li>GitHub Actions</li><li>Claude API</li>
-          </ul>
-        </article>
-
-        <article class="pWorks__item pWorks__item--end">
-          <p class="pWorks__item_end_text js-lines">記録は、<br>まだ増えています。</p>
-          <a class="cLinkButton" href="#contact">
-            <span class="cLinkButton__face">
-              <span class="cLinkButton__label">Contact</span>
-              <span class="cLinkButton__label" aria-hidden="true">Contact</span>
-            </span>
-            <i class="cLinkButton__corner cLinkButton__corner--tl"></i>
-            <i class="cLinkButton__corner cLinkButton__corner--br"></i>
-          </a>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ NUMBERS ============ -->
-  <section class="pNumbers">
-    <div class="pNumbers__inner">
-      <ul class="pNumbers__list">
-        <li class="pNumbers__item">
-          <span class="pNumbers__item_num"><span class="js-count" data-to="3">0</span></span>
-          <span class="pNumbers__item_label">媒体を横断して記録</span>
-        </li>
-        <li class="pNumbers__item">
-          <span class="pNumbers__item_num"><span class="js-count" data-to="7">0</span><small>:00</small></span>
-          <span class="pNumbers__item_label">毎朝、自動で更新</span>
-        </li>
-        <li class="pNumbers__item">
-          <span class="pNumbers__item_num"><span class="js-count" data-to="365">0</span><small>日</small></span>
-          <span class="pNumbers__item_label">止めずに動く仕組み</span>
-        </li>
-      </ul>
-    </div>
+    </article>
   </section>
 
   <!-- ============ CONTACT ============ -->
-  <section class="pContact" id="contact">
-    <div class="pContact__inner">
-
-      <h2 class="cHeading cHeading--light">
-        <span class="cHeading__en js-chars">Contact</span>
-        <span class="cHeading__ja js-lines">つながる</span>
-      </h2>
-
-      <p class="pContact__lead js-lines">
-        取材・出演・お仕事のご相談は、こちらから。
-      </p>
-
-      <ul class="pContact__icons">
-        <li data-from="center">
-          <a href="https://www.youtube.com/@nekkyoradio" target="_blank" rel="noopener">
-            <span class="pContact__icons_mark">
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                <path fill-rule="evenodd" d="M21.58 7.2a2.78 2.78 0 0 0-1.96-1.96C17.88 4.8 12 4.8 12 4.8s-5.88 0-7.62.44A2.78 2.78 0 0 0 2.42 7.2C2 8.94 2 12 2 12s0 3.06.42 4.8a2.78 2.78 0 0 0 1.96 1.96c1.74.44 7.62.44 7.62.44s5.88 0 7.62-.44a2.78 2.78 0 0 0 1.96-1.96C22 15.06 22 12 22 12s0-3.06-.42-4.8ZM9.9 15.4V8.6l5.9 3.4-5.9 3.4Z"/>
-              </svg>
-            </span>
-            <span class="pContact__icons_label">YouTube</span>
-          </a>
-        </li>
-        <li data-from="center">
-          <a href="https://www.instagram.com/nekkyouradio/" target="_blank" rel="noopener">
-            <span class="pContact__icons_mark">
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                <path fill-rule="evenodd" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 2a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8Zm5.35-2.8a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/>
-              </svg>
-            </span>
-            <span class="pContact__icons_label">Instagram</span>
-          </a>
-        </li>
-        <li data-from="center">
-          <a href="https://www.tiktok.com/@nekkyou_radio" target="_blank" rel="noopener">
-            <span class="pContact__icons_mark">
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                <path d="M13.3 2h2.5a5.4 5.4 0 0 0 4.6 4.5v2.6a7.7 7.7 0 0 1-4.1-1.3v6.6a6.1 6.1 0 1 1-6.1-6.1c.3 0 .6 0 .9.06v2.7a3.4 3.4 0 1 0 2.4 3.26V2Z"/>
-              </svg>
-            </span>
-            <span class="pContact__icons_label">TikTok</span>
-          </a>
-        </li>
-        <li data-from="center">
-          <a href="mailto:soratoki11703@gmail.com">
-            <span class="pContact__icons_mark">
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                <path fill-rule="evenodd" d="M3.5 4.5h17A1.5 1.5 0 0 1 22 6v12a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18V6a1.5 1.5 0 0 1 1.5-1.5ZM4 7.6V17.5h16V7.6l-8 5.2-8-5.2Zm.9-1.1L12 11.1l7.1-4.6H4.9Z"/>
-              </svg>
-            </span>
-            <span class="pContact__icons_label">Mail</span>
-          </a>
-        </li>
-      </ul>
-
-    </div>
+  <section class="zone zone--center" id="contact" data-zone="5" data-sector="05 CONTACT">
+    <article class="win win--center">
+      <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span>~/kazusora/contact</span></div>
+      <div class="win__body">
+        <p class="win__kicker">05 — CONTACT</p>
+        <h2 class="win__title">つながる</h2>
+        <p>取材・出演・お仕事のご相談は、メールか各 SNS から。</p>
+        <ul class="contact">
+          <li><a href="mailto:soratoki11703@gmail.com"><span class="contact__k">MAIL</span>soratoki11703@gmail.com</a></li>
+          <li><a href="https://www.youtube.com/@nekkyoradio" target="_blank" rel="noopener"><span class="contact__k">YOUTUBE</span>@nekkyoradio</a></li>
+          <li><a href="https://www.instagram.com/nekkyouradio/" target="_blank" rel="noopener"><span class="contact__k">INSTAGRAM</span>@nekkyouradio</a></li>
+          <li><a href="https://www.tiktok.com/@nekkyou_radio" target="_blank" rel="noopener"><span class="contact__k">TIKTOK</span>@nekkyou_radio</a></li>
+          <li><a href="https://x.com/kazusora_takuma" target="_blank" rel="noopener"><span class="contact__k">X</span>@kazusora_takuma</a></li>
+        </ul>
+      </div>
+    </article>
   </section>
 
 </main>
 
-<footer class="lFooter">
-  <p class="lFooter__logo">KAZUSORA</p>
-  <p class="lFooter__copy">&copy; <span id="year">2026</span> 詫摩一空 / TAKUMA KAZUSORA</p>
-  <p class="lFooter__links"><a href="/games/">KAZUSORA GAMES</a> ・ <a href="/privacy/">プライバシーポリシー</a></p>
+<footer class="foot">
+  <p class="foot__logo">KAZUSORA</p>
+  <p class="foot__links"><a href="/games/">KAZUSORA GAMES</a><a href="/privacy/">プライバシーポリシー</a></p>
+  <p class="foot__copy">&copy; <span id="year">2026</span> 詫摩一空 / TAKUMA KAZUSORA</p>
 </footer>
 
-<!-- 外部CDNから読まず自前で配信する。CDNが乗っ取られると
-     このサイト上で任意のコードを実行されるため（サプライチェーン攻撃） -->
-<script src="./assets/js/vendor/gsap.min.js"></script>
-<script src="./assets/js/vendor/ScrollTrigger.min.js"></script>
-<script src="./assets/js/vendor/lenis.min.js"></script>
-<script src="./assets/js/burn.js?v=2"></script>
-<script src="./assets/js/main.js?v=2"></script>
-<script src="./assets/js/cursor-fire.js?v=2"></script>
+<!-- 外部CDNから読まず自前で配信する（サプライチェーン攻撃を防ぐため） -->
+<script src="./assets/js/vendor/three.min.js"></script>
+<script src="./assets/js/space.js?v=1"></script>
 <!-- アクセス計測（Cloudflare Web Analytics。Cookie は使わない） -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9926faf0ab3e4a0c98c5b6c5265ab36c"}'></script>
 </body>
