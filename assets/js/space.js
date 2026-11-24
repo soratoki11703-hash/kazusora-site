@@ -121,7 +121,7 @@
   var CYAN = new T.Color(0x7cf7ff), HEAT = new T.Color(0xff5a36), WHITE = new T.Color(0xffffff);
   var scene = new T.Scene();
   scene.background = new T.Color(BG);
-  scene.fog = new T.FogExp2(BG, 0.016);
+  scene.fog = new T.FogExp2(0x07121a, 0.011);
 
   var camera = new T.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 900);
   camera.position.set(0, 3.2, 14);
@@ -158,28 +158,40 @@
     return s;
   }
 
-  /* ---- 空（地平線が少し光るグラデーション） ---- */
-  var sky = new T.Mesh(new T.SphereGeometry(600, 32, 16), new T.ShaderMaterial({
+  /* ---- 遠景の空（Blender / Cycles でレンダリングした360°パノラマ） ----
+     画像の中央が正面（three.js の -Z）。カメラと一緒に動かして「無限に遠い」ように見せる */
+  var skyTex = loader.load('./assets/world/sky.jpg', function (tex) {
+    // 同じ画像を建物の映り込み（環境マップ）にも使う
+    try {
+      var pm = new T.PMREMGenerator(renderer);
+      tex.mapping = T.EquirectangularReflectionMapping;
+      scene.environment = pm.fromEquirectangular(tex).texture;
+      pm.dispose();
+    } catch (e) { /* 映り込みが無くても表示はできる */ }
+  });
+  skyTex.encoding = T.sRGBEncoding;
+  var sky = new T.Mesh(new T.SphereGeometry(800, 48, 24), new T.ShaderMaterial({
     side: T.BackSide, depthWrite: false, fog: false,
-    uniforms: { uTime: { value: 0 } },
-    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    uniforms: { uSky: { value: skyTex } },
+    vertexShader: 'varying vec3 vD; void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: [
-      'varying vec3 vP; uniform float uTime;',
+      'varying vec3 vD; uniform sampler2D uSky;',
       'void main(){',
-      '  float h = vP.y;',
-      '  vec3 top = vec3(0.012,0.016,0.03);',
-      '  vec3 hor = vec3(0.04,0.13,0.18);',
-      '  vec3 heat = vec3(0.35,0.08,0.04);',
-      '  float band = exp(-abs(h)*14.0);',
-      '  vec3 col = mix(top, hor, band);',
-      '  col += heat * exp(-abs(h-0.01)*60.0) * smoothstep(0.2,1.0,-vP.z) * 0.6;',
-      '  gl_FragColor = vec4(col,1.0);',
+      '  vec3 d = normalize(vD);',
+      '  vec2 uv = vec2(atan(d.x, -d.z) / 6.28318 + 0.5, asin(clamp(d.y,-1.0,1.0)) / 3.14159 + 0.5);',
+      '  vec3 c = texture2D(uSky, uv).rgb;',
+      '  gl_FragColor = vec4(pow(c, vec3(2.2)), 1.0);', // sRGB の画像を線形に戻す（出力側でまた sRGB にする）
       '}'
     ].join('\n')
   }));
+  sky.renderOrder = -1;
   scene.add(sky);
 
-  /* ---- 床（遠くへ消えていくグリッド＋展示物の下の光だまり） ---- */
+  /* ---- 床（Blender で描いた回路パターン。光のパルスが奥へ走る） ---- */
+  var circuit = loader.load('./assets/world/circuit.png');
+  circuit.wrapS = circuit.wrapT = T.RepeatWrapping;
+  circuit.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  var FOG_RGB = new T.Color(0x07121a);
   var POOLS = ZONE_Z.map(function (z, i) { return new T.Vector3(sideX(i), 0, z - 6); });
   var floorMat = new T.ShaderMaterial({
     transparent: false,
@@ -187,30 +199,37 @@
       uTime: { value: 0 },
       uCam: { value: camera.position },
       uPools: { value: POOLS },
-      uCyan: { value: CYAN }, uHeat: { value: HEAT }
+      uCyan: { value: CYAN }, uHeat: { value: HEAT },
+      uCircuit: { value: circuit },
+      uFog: { value: FOG_RGB }
     },
     vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
     fragmentShader: [
-      'varying vec3 vW; uniform float uTime; uniform vec3 uCam; uniform vec3 uPools[6]; uniform vec3 uCyan; uniform vec3 uHeat;',
+      'varying vec3 vW; uniform float uTime; uniform vec3 uCam; uniform vec3 uPools[6]; uniform vec3 uCyan; uniform vec3 uHeat; uniform sampler2D uCircuit; uniform vec3 uFog;',
       'float grid(vec2 p, float s, float w){ vec2 g = abs(fract(p/s - 0.5) - 0.5) / fwidth(p/s); return 1.0 - min(min(g.x,g.y)/w, 1.0); }',
       'void main(){',
       '  vec2 p = vW.xz;',
       '  float d = length(vW - uCam);',
-      '  float g1 = grid(p, 2.0, 1.0) * 0.35;',
-      '  float g2 = grid(p, 10.0, 1.4) * 0.8;',
-      '  float scan = smoothstep(0.0, 1.0, 1.0 - abs(fract((p.y + uTime*6.0)/60.0) - 0.5)*2.0);',
-      '  scan = pow(scan, 24.0);',
-      '  vec3 col = vec3(0.008,0.012,0.02);',
-      '  col += uCyan * (g1 + g2) * 0.22;',
-      '  col += uCyan * g2 * scan * 0.9;',
+      '  float c = texture2D(uCircuit, p / 32.0).r;',
+      '  float c2 = texture2D(uCircuit, p / 96.0 + 0.37).r;',
+      '  float g2 = grid(p, 10.0, 1.2);',
+      // 奥へ流れる光のパルス（回路の上だけ光る）
+      '  float wave = pow(fract(-p.y / 48.0 - uTime * 0.35), 10.0);',
+      '  float wave2 = pow(fract((p.x + p.y) / 70.0 + uTime * 0.18), 14.0);',
+      '  vec3 col = vec3(0.006,0.01,0.016);',
+      '  col += uCyan * c * (0.07 + wave * 1.1 + wave2 * 0.5);',
+      '  col += uCyan * c2 * 0.03;',
+      '  col += uCyan * g2 * 0.07;',
       '  for(int i=0;i<6;i++){',
       '    float r = length(p - uPools[i].xz);',
       '    vec3 pc = (i==1 || i==2) ? uHeat : uCyan;',
-      '    col += pc * exp(-r*r/60.0) * 0.18;',
-      '    col += pc * (g1+g2) * exp(-r*r/120.0) * 0.5;',
+      '    col += pc * exp(-r*r/70.0) * 0.16;',
+      '    col += pc * c * exp(-r*r/160.0) * 0.7;',
       '  }',
-      '  float fog = 1.0 - exp(-d*d*0.00022);',
-      '  col = mix(col, vec3(0.02,0.027,0.047), clamp(fog,0.0,1.0));',
+      // 道の真ん中に一本の光のレーン
+      '  col += uCyan * (1.0 - smoothstep(0.0, 0.12, abs(p.x))) * 0.5;',
+      '  float fog = 1.0 - exp(-d*d*0.00018);',
+      '  col = mix(col, uFog, clamp(fog,0.0,1.0));',
       '  gl_FragColor = vec4(col, 1.0);',
       '}'
     ].join('\n'),
@@ -221,27 +240,32 @@
   floor.position.z = -200;
   scene.add(floor);
 
-  /* ---- 両脇に並ぶ黒いモノリス（データセンターのような街並み） ---- */
-  var monoGeo = new T.BoxGeometry(1, 1, 1);
-  var monoMat = new T.MeshStandardMaterial({ color: 0x0b1018, roughness: 0.35, metalness: 0.85 });
-  var edgeGeo = new T.EdgesGeometry(monoGeo);
-  var edgeMat = new T.LineBasicMaterial({ color: 0x3fa9c9, transparent: true, opacity: 0.35 });
-  var rnd = (function () { var s = 7; return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })();
-  var count = mobile ? 34 : 70;
-  for (var m = 0; m < count; m++) {
-    var side = m % 2 ? 1 : -1;
-    var w = 2 + rnd() * 5, h = 6 + Math.pow(rnd(), 2) * 46, dz = 2 + rnd() * 6;
-    var g = new T.Group();
-    var body = new T.Mesh(monoGeo, monoMat); body.scale.set(w, h, dz);
-    var edge = new T.LineSegments(edgeGeo, edgeMat); edge.scale.set(w, h, dz);
-    g.add(body, edge);
-    g.position.set(side * (22 + rnd() * 60), h / 2, 30 - rnd() * 430);
-    scene.add(g);
-    if (rnd() > 0.6) { // 窓のような細い光の筋
-      var strip = new T.Mesh(new T.PlaneGeometry(w * 0.8, 0.12), new T.MeshBasicMaterial({ color: rnd() > 0.7 ? HEAT : CYAN, transparent: true, opacity: 0.7 }));
-      strip.position.set(g.position.x, 2 + rnd() * (h - 3), g.position.z + dz / 2 + 0.01);
-      scene.add(strip);
-    }
+  /* ---- Blender でつくった街（データタワー・六角形のゲート・データの雨・ボクセル） ----
+     元の場面は ~/kazusora.com/blender/build_world.py（素材の名前で役割を見分ける） */
+  var rainMaps = [];
+  if (T.GLTFLoader) {
+    new T.GLTFLoader(manager).load('./assets/world/world.glb', function (gltf) {
+      gltf.scene.traverse(function (o) {
+        if (!o.isMesh) return;
+        var m = o.material, name = m.name || '';
+        if (name === 'tower') {
+          m.emissiveIntensity = 1.5;
+          m.envMapIntensity = 1.2;
+          // 斜めから見た窓がザラザラしないように
+          if (m.emissiveMap) m.emissiveMap.anisotropy = circuit.anisotropy;
+        } else if (name === 'dataRain') {
+          var map = m.emissiveMap;
+          map.wrapS = map.wrapT = T.RepeatWrapping;
+          rainMaps.push(map);
+          o.material = new T.MeshBasicMaterial({ map: map, color: 0xbff8ff, transparent: true, opacity: 0.9, blending: T.AdditiveBlending, depthWrite: false, side: T.DoubleSide });
+        } else if (/^glow|^voxel$/.test(name)) {
+          // 光るパーツは照明に左右されない単色にする（にじんで見えるよう少し明るめ）
+          var k = name === 'voxel' ? 0.45 : 1.6;
+          o.material = new T.MeshBasicMaterial({ color: m.emissive.clone().multiplyScalar(k) });
+        }
+      });
+      scene.add(gltf.scene);
+    });
   }
 
   scene.add(new T.HemisphereLight(0x6fbfff, 0x05070c, 0.5));
@@ -527,6 +551,8 @@
     camera.lookAt(camX * 0.4, 4.2 - mouseS.y * 0.8, camZ - 24);
 
     floorMat.uniforms.uTime.value = t;
+    sky.position.copy(camera.position);
+    for (var r = 0; r < rainMaps.length; r++) rainMaps[r].offset.y = -t * 0.12;
     dust.rotation.y = Math.sin(t * 0.05) * 0.02;
     dust.position.y = Math.sin(t * 0.2) * 0.4;
     for (var i = 0; i < updaters.length; i++) updaters[i](t);

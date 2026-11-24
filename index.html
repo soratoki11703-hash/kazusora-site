@@ -21,7 +21,7 @@
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data: blob:;
-  connect-src 'self' https://cloudflareinsights.com;
+  connect-src 'self' blob: https://cloudflareinsights.com;
   object-src 'none';
   base-uri 'self';
   form-action 'none';
@@ -100,7 +100,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
-<link rel="stylesheet" href="./assets/css/space.css?v=1">
+<link rel="stylesheet" href="./assets/css/space.css?v=2">
 </head>
 <body>
 
@@ -334,7 +334,8 @@
 
 <!-- 外部CDNから読まず自前で配信する（サプライチェーン攻撃を防ぐため） -->
 <script src="./assets/js/vendor/three.min.js"></script>
-<script src="./assets/js/space.js?v=1"></script>
+<script src="./assets/js/vendor/GLTFLoader.js"></script>
+<script src="./assets/js/space.js?v=2"></script>
 <!-- アクセス計測（Cloudflare Web Analytics。Cookie は使わない） -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9926faf0ab3e4a0c98c5b6c5265ab36c"}'></script>
 </body>
