@@ -117,11 +117,12 @@
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
 
-  var BG = 0x05070c;
-  var CYAN = new T.Color(0x7cf7ff), HEAT = new T.Color(0xff5a36), WHITE = new T.Color(0xffffff);
+  // 色はマトリックス風の緑で統一（GREEN が基本、LIME は明るいアクセント）
+  var BG = 0x010402;
+  var GREEN = new T.Color(0x3dff6e), LIME = new T.Color(0xc4ffd2), WHITE = new T.Color(0xe8fff0);
   var scene = new T.Scene();
   scene.background = new T.Color(BG);
-  scene.fog = new T.FogExp2(0x07121a, 0.011);
+  scene.fog = new T.FogExp2(0x020a05, 0.011);
 
   var camera = new T.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 900);
   camera.position.set(0, 3.2, 14);
@@ -161,13 +162,21 @@
   /* ---- 文字で描く仕組み（動くものは全部これで描く） ----
      1つの点 = 1文字。点ごとに数字が入れ替わり続ける。
      文字表（16×16）の並び: 0〜9, A〜F, 記号。uCount=10 なら数字だけ、16 なら16進数まで */
-  var GLYPH_CHARS = '0123456789ABCDEF:.+-=/<>#%*';
+  // 0〜9 の次に半角カタカナ（左右反転して描く）。uCount=10 で数字だけ、56 でカタカナ込み、2 で 0 と 1
+  var KANA = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+  var GLYPH_CHARS = '0123456789' + KANA + ':.+-=*';
+  var GLYPH_ALL = 10 + KANA.length;
   var atlasCanvas = (function () {
     var S = 64, c = document.createElement('canvas'); c.width = c.height = S * 16;
     var g = c.getContext('2d');
     g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.font = '700 50px ui-monospace, Menlo, Consolas, "Courier New", monospace';
-    for (var i = 0; i < GLYPH_CHARS.length; i++) g.fillText(GLYPH_CHARS[i], (i % 16 + 0.5) * S, (Math.floor(i / 16) + 0.54) * S);
+    for (var i = 0; i < GLYPH_CHARS.length; i++) {
+      var cx = (i % 16 + 0.5) * S, cy = (Math.floor(i / 16) + 0.54) * S;
+      g.save(); g.translate(cx, cy);
+      if (i >= 10 && i < GLYPH_ALL) { g.scale(-1, 1); g.font = '700 50px "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", monospace'; }
+      else g.font = '700 50px ui-monospace, Menlo, Consolas, "Courier New", monospace';
+      g.fillText(GLYPH_CHARS[i], 0, 0); g.restore();
+    }
     return c;
   })();
   var atlas = new T.CanvasTexture(atlasCanvas);
@@ -207,7 +216,7 @@
   function glyphs(n, o) {
     o = o || {};
     var A = { pos: new Float32Array(n * 3), seed: new Float32Array(n), bright: new Float32Array(n), col: new Float32Array(n * 3), size: new Float32Array(n), data: new Float32Array(n * 4) };
-    var c = new T.Color(o.color === undefined ? CYAN : o.color);
+    var c = new T.Color(o.color === undefined ? GREEN : o.color);
     for (var i = 0; i < n; i++) {
       A.seed[i] = Math.random() * 1000; A.bright[i] = 1; A.size[i] = 1;
       A.col[i * 3] = c.r; A.col[i * 3 + 1] = c.g; A.col[i * 3 + 2] = c.b;
@@ -269,14 +278,32 @@
   skyTex.encoding = T.sRGBEncoding;
   var sky = new T.Mesh(new T.SphereGeometry(800, 48, 24), new T.ShaderMaterial({
     side: T.BackSide, depthWrite: false, fog: false,
-    uniforms: { uSky: { value: skyTex } },
+    uniforms: { uSky: { value: skyTex }, uAtlas: { value: atlasFlat }, uTime: GU.uTime },
     vertexShader: 'varying vec3 vD; void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: [
-      'varying vec3 vD; uniform sampler2D uSky;',
+      'varying vec3 vD; uniform sampler2D uSky; uniform sampler2D uAtlas; uniform float uTime;',
+      'float hs(float x){ return fract(sin(x * 12.9898) * 43758.5453); }',
       'void main(){',
       '  vec3 d = normalize(vD);',
       '  vec2 uv = vec2(atan(d.x, -d.z) / 6.28318 + 0.5, asin(clamp(d.y,-1.0,1.0)) / 3.14159 + 0.5);',
       '  vec3 c = texture2D(uSky, uv).rgb;',
+      '  float l = dot(c, vec3(0.3, 0.59, 0.11));',
+      '  c = vec3(0.08, 1.0, 0.32) * pow(l, 1.15) * 0.75;',
+      '  vec2 g = vec2(uv.x * 360.0, uv.y * 120.0);',
+      '  float colId = floor(g.x); vec2 f = fract(g);',
+      '  float sp = 4.0 + hs(colId) * 9.0;',
+      '  float L = 10.0 + hs(colId + 7.1) * 26.0;',
+      '  float row = floor(g.y);',
+      '  float head = mod(-uTime * sp + hs(colId + 3.3) * 400.0, 120.0 + L);',
+      '  float dist = row - head;',
+      '  float tb = (dist >= 0.0 && dist < L) ? pow(1.0 - dist / L, 1.6) : 0.0;',
+      '  float on = step(0.2, hs(colId * 1.7 + 0.4));',
+      '  float gi = floor(hs(colId * 3.1 + row * 7.7 + floor(uTime * (dist < 2.0 ? 14.0 : 1.0) + hs(row + colId)) * 0.13) * ' + GLYPH_ALL.toFixed(1) + ');',
+      '  vec2 cl = vec2(mod(gi, 16.0), floor(gi / 16.0));',
+      '  float a = texture2D(uAtlas, vec2((cl.x + f.x) / 16.0, 1.0 - (cl.y + 1.0 - f.y) / 16.0)).a;',
+      '  float fade = smoothstep(0.42, 0.55, uv.y);',
+      '  vec3 rc = (dist >= 0.0 && dist < 1.0) ? vec3(0.8, 1.0, 0.85) : vec3(0.1, 1.0, 0.35);',
+      '  c += rc * a * (tb * 1.3 + 0.06) * on * fade;',
       '  gl_FragColor = vec4(pow(c, vec3(2.2)), 1.0);', // sRGB の画像を線形に戻す（出力側でまた sRGB にする）
       '}'
     ].join('\n')
@@ -288,7 +315,7 @@
   var circuit = loader.load('./assets/world/circuit.png');
   circuit.wrapS = circuit.wrapT = T.RepeatWrapping;
   circuit.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  var FOG_RGB = new T.Color(0x07121a);
+  var FOG_RGB = new T.Color(0x020a05);
   var POOLS = ZONE_Z.map(function (z, i) { return new T.Vector3(sideX(i), 0, z - 6); });
   var floorMat = new T.ShaderMaterial({
     transparent: false,
@@ -296,7 +323,7 @@
       uTime: { value: 0 },
       uCam: { value: camera.position },
       uPools: { value: POOLS },
-      uCyan: { value: CYAN }, uHeat: { value: HEAT },
+      uCyan: { value: GREEN }, uHeat: { value: LIME },
       uCircuit: { value: circuit },
       uAtlas: { value: atlasFlat },
       uFog: { value: FOG_RGB }
@@ -310,8 +337,9 @@
       'float glyph(vec2 p, float cell, float rate){',
       '  vec2 g = p / cell; vec2 id = floor(g); vec2 f = fract(g);',
       '  float h = hh(id);',
-      '  float gi = floor(hh(id + floor(uTime*rate*(0.4+h) + h*9.0)*0.731) * 10.0);',
-      '  return texture2D(uAtlas, vec2((gi + f.x)/16.0, 1.0 - f.y/16.0)).a;',
+      '  float gi = floor(hh(id + floor(uTime*rate*(0.4+h) + h*9.0)*0.731) * ' + GLYPH_ALL.toFixed(1) + ');',
+      '  vec2 cl = vec2(mod(gi, 16.0), floor(gi / 16.0));',
+      '  return texture2D(uAtlas, vec2((cl.x + f.x)/16.0, 1.0 - (cl.y + f.y)/16.0)).a;',
       '}',
       'void main(){',
       '  vec2 p = vW.xz;',
@@ -356,6 +384,39 @@
   floor.position.z = -200;
   scene.add(floor);
 
+  /* ---- ビルの壁に貼る「流れ落ちるコード」の模様（縦につなげても継ぎ目が出ない） ---- */
+  var codeTex = (function () {
+    var W = 512, H = 1024, CS = 16, COLS = W / CS, ROWS = H / CS, AS = 64;
+    var c = document.createElement('canvas'); c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+    var heads = [];
+    function cell(i, x, y) { g.drawImage(atlasCanvas, (i % 16) * AS, Math.floor(i / 16) * AS, AS, AS, x, y, CS, CS); }
+    for (var col = 0; col < COLS; col++) {
+      var trails = [], nt = 1 + Math.floor(Math.random() * 3);
+      for (var k = 0; k < nt; k++) trails.push([Math.floor(Math.random() * ROWS), 6 + Math.floor(Math.random() * 26)]);
+      for (var r = 0; r < ROWS; r++) {
+        var b = 0.16, head = false;
+        trails.forEach(function (t) {
+          var d = (t[0] - r + ROWS) % ROWS;
+          if (d < t[1]) { b = Math.max(b, Math.pow(1 - d / t[1], 1.4)); if (d === 0) head = true; }
+        });
+        var gi = Math.floor(Math.random() * GLYPH_ALL);
+        if (head) { heads.push([gi, col * CS, r * CS]); continue; }
+        g.globalAlpha = b; cell(gi, col * CS, r * CS);
+      }
+    }
+    g.globalAlpha = 1;
+    g.globalCompositeOperation = 'multiply'; g.fillStyle = '#3dff6e'; g.fillRect(0, 0, W, H);
+    g.globalCompositeOperation = 'source-over';
+    heads.forEach(function (h) { cell(h[0], h[1], h[2]); });
+    var t = new T.CanvasTexture(c);
+    t.wrapS = t.wrapT = T.RepeatWrapping;
+    t.encoding = T.sRGBEncoding;
+    t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    return t;
+  })();
+
   /* ---- Blender でつくった街（データタワー・六角形のゲート・データの雨・ボクセル） ----
      元の場面は ~/kazusora.com/blender/build_world.py（素材の名前で役割を見分ける） */
   if (T.GLTFLoader) {
@@ -364,27 +425,32 @@
         if (!o.isMesh) return;
         var m = o.material, name = m.name || '';
         if (name === 'tower') {
-          m.emissiveIntensity = 1.5;
-          m.envMapIntensity = 1.2;
-          // 斜めから見た窓がザラザラしないように
-          if (m.emissiveMap) m.emissiveMap.anisotropy = circuit.anisotropy;
+          // ビルの壁一面に、上から下へ流れ落ちる緑のコード
+          m.emissiveMap = codeTex;
+          m.emissive.set(0xffffff);
+          m.emissiveIntensity = 2.2;
+          m.color.set(0x020604);
+          m.envMapIntensity = 0.6;
+          m.needsUpdate = true;
         } else if (name === 'dataRain') {
           o.visible = false; // データの雨は下の「数字の雨」で描く
         } else if (/^glow|^voxel$/.test(name)) {
           // 光るパーツは照明に左右されない単色にする（にじんで見えるよう少し明るめ）
-          var k = name === 'voxel' ? 0.45 : 1.6;
-          o.material = new T.MeshBasicMaterial({ color: m.emissive.clone().multiplyScalar(k) });
+          var c = name === 'voxel' ? GREEN.clone().multiplyScalar(0.45)
+            : name === 'glowHeat' ? LIME.clone()
+            : name === 'glowWhite' ? WHITE.clone() : GREEN.clone().multiplyScalar(1.4);
+          o.material = new T.MeshBasicMaterial({ color: c });
         }
       });
       scene.add(gltf.scene);
     });
   }
 
-  scene.add(new T.HemisphereLight(0x6fbfff, 0x05070c, 0.5));
+  scene.add(new T.HemisphereLight(0x3dff6e, 0x05070c, 0.5));
 
   /* ---- 漂う数字（空中のちり） ---- */
   var ND = mobile ? 700 : 1800;
-  var DUST = glyphs(ND, { size: 0.17, count: 16, rate: 0.8, color: 0x9fdcff, custom: 'p.y = mod(p.y + uTime * aData.x, 30.0); b = 0.45;' });
+  var DUST = glyphs(ND, { size: 0.17, count: GLYPH_ALL, rate: 0.8, color: 0x2bd85a, custom: 'p.y = mod(p.y + uTime * aData.x, 30.0); b = 0.45;' });
   for (var k = 0; k < ND; k++) {
     DUST.A.pos[k * 3] = (Math.random() - 0.5) * 120;
     DUST.A.pos[k * 3 + 1] = Math.random() * 30;
@@ -395,29 +461,27 @@
 
   /* ---- 数字の雨（街のあいだを落ちてくる縦の列） ---- */
   (function () {
-    var COLS = mobile ? 150 : 360, STEP = 0.55, lens = [], total = 0;
+    var COLS = mobile ? 220 : 560, STEP = 0.55, lens = [], total = 0;
     for (var c = 0; c < COLS; c++) { var L = 22 + Math.floor(Math.random() * 50); lens.push(L); total += L; }
-    var G = glyphs(total, { size: 0.44, count: 16, rate: 1.2, custom: [
+    var G = glyphs(total, { size: 0.44, count: GLYPH_ALL, rate: 1.2, custom: [
       'float L = aData.y;',
       'float head = mod(uTime * aData.z + aData.w, L + 30.0);',
       'float dist = head - (L - 1.0 - aData.x);', // 落ちてくる先頭からどれだけ上か
       'b = dist < 0.0 ? 0.0 : exp(-dist * 0.15);',
-      'if (dist >= 0.0 && dist < 1.0) { col = vec3(0.9,1.0,1.0); b = 1.7; }',
+      'if (dist >= 0.0 && dist < 1.0) { col = vec3(0.85,1.0,0.9); b = 1.8; } else if (dist > 0.0 && dist < 3.0) { col = mix(vec3(0.7,1.0,0.78), col, dist / 3.0); }',
       'rate = dist < 4.0 ? 16.0 : 1.2;',
       'b += 0.035;'
     ].join('\n') });
     var n = 0;
     for (c = 0; c < COLS; c++) {
       var side = Math.random() < 0.5 ? -1 : 1;
-      var x = side * (15 + Math.pow(Math.random(), 1.3) * 48);
+      var x = side * (9 + Math.pow(Math.random(), 1.2) * 60);
       var z = 25 - Math.random() * 440;
       var y0 = Math.random() < 0.3 ? Math.random() * 16 : 0;
       var speed = 8 + Math.random() * 16, ph = Math.random() * 100;
-      var heat = Math.random() < 0.12;
       for (var k = 0; k < lens[c]; k++, n++) {
         G.A.pos[n * 3] = x; G.A.pos[n * 3 + 1] = y0 + k * STEP; G.A.pos[n * 3 + 2] = z;
         G.A.data[n * 4] = k; G.A.data[n * 4 + 1] = lens[c]; G.A.data[n * 4 + 2] = speed; G.A.data[n * 4 + 3] = ph;
-        if (heat) setRgb(G.A.col, n, HEAT);
       }
     }
     scene.add(G.done());
@@ -426,7 +490,7 @@
   /* ---- ゾーンのあいだの六角形ゲートを、ぐるっと走る数字 ---- */
   (function () {
     var list = [];
-    [[10.5, CYAN], [9.7, HEAT]].forEach(function (rc) {
+    [[10.5, GREEN], [9.7, LIME]].forEach(function (rc) {
       var R = rc[0], cz = R * Math.sin(Math.PI / 3) + 0.05, per = Math.round(R / 0.38);
       for (var gi = 0; gi < ZONE_Z.length - 1; gi++) {
         var gz = -(SPACING / 2 + gi * SPACING) + 0.4;
@@ -457,13 +521,13 @@
   (function () {
     var g = new T.Group(); g.position.set(0, 7.5, ZONE_Z[0] - 16);
     var shell = glyphSphere(2.3, mobile ? 420 : 700, { size: 0.27, rate: 3, custom: 'b = 0.3 + 1.0 * pow(0.5 + 0.5 * sin(aData.y * 6.0 - uTime * 2.0), 4.0);' });
-    var inner = glyphSphere(1.2, 220, { size: 0.22, color: WHITE, count: 16, rate: 7, custom: 'b = 0.7;' });
+    var inner = glyphSphere(1.2, 220, { size: 0.22, color: WHITE, count: GLYPH_ALL, rate: 7, custom: 'b = 0.7;' });
     var chase = 'b = 0.3 + 1.2 * pow(fract(aData.x * 2.0 - uTime * 0.4), 6.0);';
     var ringA = glyphRing(4.2, 150, { size: 0.32, custom: chase });
-    var ringB = glyphRing(5.4, 190, { size: 0.3, color: HEAT, custom: chase.replace('- uTime', '+ uTime') });
+    var ringB = glyphRing(5.4, 190, { size: 0.3, color: LIME, custom: chase.replace('- uTime', '+ uTime') });
     var ringC = glyphRing(6.6, 280, { size: 0.22, color: WHITE, count: 2, rate: 4, custom: 'b = 0.4;' }); // 0 と 1 だけの輪
-    g.add(shell.points, inner.points, ringA.points, ringB.points, ringC.points, glow(CYAN, 16, 0.3));
-    var light = new T.PointLight(0x7cf7ff, 2.2, 60); g.add(light);
+    g.add(shell.points, inner.points, ringA.points, ringB.points, ringC.points, glow(GREEN, 16, 0.3));
+    var light = new T.PointLight(0x3dff6e, 2.2, 60); g.add(light);
     scene.add(g);
     updaters.push(function (t) {
       shell.points.rotation.set(t * 0.2, t * 0.3, 0); inner.points.rotation.set(-t * 0.4, t * 0.2, 0);
@@ -477,24 +541,24 @@
   (function () {
     var x = sideX(1), z = ZONE_Z[1] - 6;
     var g = new T.Group(); g.position.set(x, 0, z); g.rotation.y = -SIDE[1] * 0.35;
-    var mast = new T.Mesh(new T.CylinderGeometry(0.05, 0.18, 12, 8), new T.MeshStandardMaterial({ color: 0x1a2230, metalness: 0.9, roughness: 0.3 }));
+    var mast = new T.Mesh(new T.CylinderGeometry(0.05, 0.18, 12, 8), new T.MeshStandardMaterial({ color: 0x0d1a12, metalness: 0.9, roughness: 0.3 }));
     mast.position.y = 6; g.add(mast);
-    var tip = glow(HEAT, 3, 0.9); tip.position.y = 12.1; g.add(tip);
-    var tipLight = new T.PointLight(0xff5a36, 2, 40); tipLight.position.y = 12; g.add(tipLight);
+    var tip = glow(LIME, 3, 0.9); tip.position.y = 12.1; g.add(tip);
+    var tipLight = new T.PointLight(0x9dff6a, 2, 40); tipLight.position.y = 12; g.add(tipLight);
     var waves = [];
     for (var i = 0; i < 6; i++) {
-      var w = glyphRing(1, 120, { size: 0.34, color: HEAT, rate: 4 });
+      var w = glyphRing(1, 120, { size: 0.34, color: LIME, rate: 4 });
       w.points.position.y = 12; g.add(w.points); waves.push(w);
     }
     var B = 28, H = 14, STEP = 0.42;
     var EQ = glyphs(B * H, { size: 0.38, rate: 6 });
-    var eqCol = new T.Color(0x3fc4d8);
+    var eqCol = new T.Color(0x22c450);
     for (var b = 0; b < B; b++) {
       var a = (b / (B - 1) - 0.5) * Math.PI * 0.9;
       for (var k = 0; k < H; k++) {
         var n = b * H + k;
         EQ.A.pos[n * 3] = Math.sin(a) * 7; EQ.A.pos[n * 3 + 1] = 0.3 + k * STEP; EQ.A.pos[n * 3 + 2] = Math.cos(a) * 3 + 2;
-        setRgb(EQ.A.col, n, b % 7 === 0 ? HEAT : eqCol);
+        setRgb(EQ.A.col, n, b % 7 === 0 ? LIME : eqCol);
       }
     }
     g.add(EQ.done());
@@ -518,7 +582,7 @@
     var x = sideX(2), z = ZONE_Z[2] - 6;
     var g = new T.Group(); g.position.set(x, 0, z);
     var ball = glyphSphere(0.62, 150, { size: 0.2, color: 0xf4f1ea, rate: 8 });
-    var red = new T.Color(0xff4a36);
+    var red = new T.Color(0xc4ffd2);
     for (var i = 0; i < ball.n; i++) {
       var lon = ball.A.data[i * 4], lat = ball.A.data[i * 4 + 1];
       if (Math.abs(Math.abs(lat) - Math.abs(Math.sin(lon) * 0.75)) < 0.16) setRgb(ball.A.col, i, red);
@@ -526,7 +590,7 @@
     ball.at.aColor.needsUpdate = true;
     ball.points.frustumCulled = false;
     g.add(ball.points);
-    var TR = 80, trail = glyphs(TR, { size: 0.3, color: HEAT, rate: 10, count: 16 });
+    var TR = 80, trail = glyphs(TR, { size: 0.3, color: LIME, rate: 10, count: GLYPH_ALL });
     trail.points.frustumCulled = false;
     for (i = 0; i < TR; i++) { trail.A.bright[i] = 0; }
     trail.done(); g.add(trail.points);
@@ -542,15 +606,15 @@
     // 照明塔
     [-1, 1].forEach(function (s) {
       var tower = new T.Group(); tower.position.set(s * 8, 0, -6);
-      var pole = new T.Mesh(new T.BoxGeometry(0.25, 16, 0.25), new T.MeshStandardMaterial({ color: 0x1a2230, metalness: 0.8, roughness: 0.4 }));
+      var pole = new T.Mesh(new T.BoxGeometry(0.25, 16, 0.25), new T.MeshStandardMaterial({ color: 0x0d1a12, metalness: 0.8, roughness: 0.4 }));
       pole.position.y = 8; tower.add(pole);
       for (var r = 0; r < 3; r++) for (var c = 0; c < 4; c++) {
-        var lamp = new T.Mesh(new T.PlaneGeometry(0.5, 0.4), new T.MeshBasicMaterial({ color: 0xfff6dd }));
+        var lamp = new T.Mesh(new T.PlaneGeometry(0.5, 0.4), new T.MeshBasicMaterial({ color: 0xd8ffe2 }));
         lamp.position.set(-0.9 + c * 0.6, 15.6 + r * 0.5, 0.2); tower.add(lamp);
       }
-      var gl = glow(new T.Color(0xfff2d0), 9, 0.55); gl.position.set(0, 16.1, 0.5); tower.add(gl);
+      var gl = glow(new T.Color(0xd8ffe2), 9, 0.55); gl.position.set(0, 16.1, 0.5); tower.add(gl);
       tower.lookAt(0, 0, 6); tower.rotation.x = 0;
-      var spot = new T.PointLight(0xfff0d0, 1.6, 40); spot.position.set(0, 15, 2); tower.add(spot);
+      var spot = new T.PointLight(0xb8ffc8, 1.6, 40); spot.position.set(0, 15, 2); tower.add(spot);
       g.add(tower);
     });
     scene.add(g);
@@ -611,7 +675,7 @@
       g.add(tile);
       return tile;
     });
-    g.add(glow(CYAN, 18, 0.14));
+    g.add(glow(GREEN, 18, 0.14));
     scene.add(g);
     updaters.push(function (t) {
       tiles.forEach(function (tile) {
@@ -653,14 +717,14 @@
       }
       P.at.aColor.needsUpdate = true; P.at.aBright.needsUpdate = true;
     });
-    var border = new T.LineSegments(new T.EdgesGeometry(new T.PlaneGeometry(9.3, Hh + 0.3)), new T.LineBasicMaterial({ color: CYAN, transparent: true, opacity: 0.6 }));
+    var border = new T.LineSegments(new T.EdgesGeometry(new T.PlaneGeometry(9.3, Hh + 0.3)), new T.LineBasicMaterial({ color: GREEN, transparent: true, opacity: 0.6 }));
     border.position.copy(holo.position); g.add(border);
     // 足元の投影装置と光の柱
-    var disc = new T.Mesh(new T.CylinderGeometry(2.2, 2.6, 0.3, 48), new T.MeshStandardMaterial({ color: 0x111826, metalness: 0.9, roughness: 0.3, emissive: CYAN, emissiveIntensity: 0.15 }));
+    var disc = new T.Mesh(new T.CylinderGeometry(2.2, 2.6, 0.3, 48), new T.MeshStandardMaterial({ color: 0x08120c, metalness: 0.9, roughness: 0.3, emissive: GREEN, emissiveIntensity: 0.15 }));
     disc.position.y = 0.15; g.add(disc);
-    var beam = new T.Mesh(new T.CylinderGeometry(4.6, 2.1, 3, 48, 1, true), new T.MeshBasicMaterial({ color: CYAN, transparent: true, opacity: 0.08, blending: T.AdditiveBlending, depthWrite: false, side: T.DoubleSide }));
+    var beam = new T.Mesh(new T.CylinderGeometry(4.6, 2.1, 3, 48, 1, true), new T.MeshBasicMaterial({ color: GREEN, transparent: true, opacity: 0.08, blending: T.AdditiveBlending, depthWrite: false, side: T.DoubleSide }));
     beam.position.y = 1.8; g.add(beam);
-    var l = new T.PointLight(0x7cf7ff, 1.6, 30); l.position.set(0, 4, 3); g.add(l);
+    var l = new T.PointLight(0x3dff6e, 1.6, 30); l.position.set(0, 4, 3); g.add(l);
     scene.add(g);
     updaters.push(function (t) {
       holo.position.y = 6.2 + Math.sin(t * 0.9) * 0.15; border.position.y = holo.position.y;
@@ -673,7 +737,7 @@
     // 連絡先の窓を囲むくらい大きく。遠くからは霧に溶けるよう uOpacity で薄くする
     var g = new T.Group(); g.position.set(0, 9, z);
     var ring = glyphRing(11, mobile ? 220 : 320, { size: 0.44, custom: 'b = 0.45 + 1.1 * pow(fract(aData.x * 4.0 - uTime * 0.3), 5.0);' });
-    var ring2 = glyphRing(12, 280, { size: 0.3, color: HEAT, count: 2, rate: 3, custom: 'b = 0.7;' });
+    var ring2 = glyphRing(12, 280, { size: 0.3, color: LIME, count: 2, rate: 3, custom: 'b = 0.7;' });
     var list = [];
     for (var r = 0.5; r < 10.7; r += 0.42) {
       var cnt = Math.max(6, Math.round(Math.PI * 2 * r / 0.42));
@@ -692,9 +756,9 @@
       disk.A.data[i * 4] = v[0] / 10.9; disk.A.data[i * 4 + 1] = Math.atan2(Math.sin(v[1]), Math.cos(v[1]));
     });
     disk.done();
-    var halo = glow(CYAN, 44, 0.25);
+    var halo = glow(GREEN, 44, 0.25);
     g.add(disk.points, ring.points, ring2.points, halo);
-    var l = new T.PointLight(0x7cf7ff, 2.5, 60); l.position.z = 4; g.add(l);
+    var l = new T.PointLight(0x3dff6e, 2.5, 60); l.position.z = 4; g.add(l);
     scene.add(g);
     updaters.push(function (t) {
       var d = camera.position.z - g.position.z;
@@ -760,6 +824,7 @@
     floorMat.uniforms.uTime.value = t;
     sky.position.copy(camera.position);
     GU.uTime.value = t;
+    codeTex.offset.y = t * 0.07; // 壁のコードを下へ流す
     for (var i = 0; i < updaters.length; i++) updaters[i](t);
 
     renderer.render(scene, camera);
